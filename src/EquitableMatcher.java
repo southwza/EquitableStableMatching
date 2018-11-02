@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,7 +17,6 @@ public class EquitableMatcher {
 		EquitableMatcher em = new EquitableMatcher();
 		em.match(args[0]);
 	}
-
 
 	private void match(String filename) {
 
@@ -47,9 +45,8 @@ public class EquitableMatcher {
 		findMostEquitableMatch(input.get(0).size(), input);
 	}
 
-
 	private void findMostEquitableMatch(Integer unmatchedCount, List<List<Person>> input) {
-		//base case: unmatched list is empty:
+		// base case: unmatched list is empty:
 		if (unmatchedCount == 0) {
 			numberOfMatchings++;
 			Long equityScore = calculateEquityScore(input);
@@ -60,7 +57,7 @@ public class EquitableMatcher {
 			return;
 		}
 
-		//recursive case:
+		// recursive case:
 		List<List<Person>> traversal = cloneGroups(input);
 		List<Person> availableMen = traversal.get(0);
 		List<Person> availableWomen = traversal.get(1);
@@ -68,7 +65,7 @@ public class EquitableMatcher {
 		List<Integer> feasibleMatches = availableMan.getFeasiblePreferences();
 		for (Integer feasibleMatchIndex : feasibleMatches) {
 			Person feasibleWoman = availableWomen.get(feasibleMatchIndex);
-			//is this match still in the list of available options?
+			// is this match still in the list of available options?
 			if (feasibleWoman.getMatch() != null) {
 				continue;
 			}
@@ -80,7 +77,6 @@ public class EquitableMatcher {
 		}
 
 	}
-
 
 	private void trimAllFeasiblePreferences(List<List<Person>> groups, List<List<Person>> manOptimalMatch,
 			List<List<Person>> womanOptimalMatch) {
@@ -104,7 +100,8 @@ public class EquitableMatcher {
 			Integer optimalMatchIndex = groupB.indexOf(optimalMatch);
 			Integer pessimalMatchIndex = groupB.indexOf(pessimalMatch);
 			trimFeasiblePreferencesForIndividual(person, optimalMatchIndex, pessimalMatchIndex);
-//			System.out.println("person: " + personIndex + " pref: " + person.getPreferenceList() + " feas: " + person.getFeasiblePreferences());
+			// System.out.println("person: " + personIndex + " pref: " +
+			// person.getPreferenceList() + " feas: " + person.getFeasiblePreferences());
 		}
 	}
 
@@ -124,20 +121,16 @@ public class EquitableMatcher {
 		}
 	}
 
-
 	private Long calculateEquityScore(List<List<Person>> manOptimalMatch) {
 		List<Person> men = manOptimalMatch.get(0);
 		List<Person> women = manOptimalMatch.get(1);
 		Long equity = 0L;
 		equity = men.stream() //
-				.map(man -> calculatePreferenceScore(man, women))
-				.reduce(0L, (a, b) -> a + b);
+				.map(man -> calculatePreferenceScore(man, women)).reduce(0L, (a, b) -> a + b);
 		equity += women.stream() //
-				.map(woman -> calculatePreferenceScore(woman, men))
-				.reduce(0L, (a, b) -> a + b);
+				.map(woman -> calculatePreferenceScore(woman, men)).reduce(0L, (a, b) -> a + b);
 		return equity;
 	}
-
 
 	private Long calculatePreferenceScore(Person person, List<Person> preferenceGroup) {
 		Integer matchIndex = preferenceGroup.indexOf(person.getMatch());
@@ -148,7 +141,6 @@ public class EquitableMatcher {
 		return preferenceListIndex.longValue();
 	}
 
-
 	private List<List<Person>> cloneGroups(List<List<Person>> groups) {
 		return groups.stream() //
 				.map(personList -> personList.stream() //
@@ -156,8 +148,5 @@ public class EquitableMatcher {
 						.collect(Collectors.toList())) //
 				.collect(Collectors.toList());
 	}
-
-
-
 
 }

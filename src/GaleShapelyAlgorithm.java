@@ -71,7 +71,7 @@ public class GaleShapelyAlgorithm {
 				possibleMatch = receivingGroup.get(possibleMatchIndex);
 			}
 		}
-		//should never get here
+		// should never get here
 		return null;
 	}
 

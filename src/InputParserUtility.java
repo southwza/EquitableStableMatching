@@ -40,11 +40,10 @@ public class InputParserUtility {
 			women.add(new Person(i));
 		}
 
-
 		List<List<Integer>> preferenceLists = lines.stream() //
 				.map(line -> Arrays.stream(line.split("\\s+")) //
-						.map(Integer::valueOf) //convert Strings to Integers
-						.map(val -> val - 1) //switch to zero based index
+						.map(Integer::valueOf) // convert Strings to Integers
+						.map(val -> val - 1) // switch to zero based index
 						.collect(Collectors.toList())) //
 				.collect(Collectors.toList());
 
