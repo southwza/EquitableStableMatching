@@ -1,6 +1,9 @@
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Person implements Serializable {
 
@@ -9,6 +12,7 @@ public class Person implements Serializable {
 	private Person match;
 	private Person lastRejected;
 	private int position;
+	private Set<Integer> feasibleMatches = Set.of();
 
 	public Person(int position) {
 		this.position = position;
@@ -20,6 +24,17 @@ public class Person implements Serializable {
 
 	public void setPreferenceList(List<Integer> preferenceList) {
 		this.preferenceList = preferenceList;
+		feasibleMatches = new HashSet<Integer>(preferenceList);
+	}
+
+	public void markInfeasible(Integer index) {
+		feasibleMatches.remove(index);
+	}
+
+	public List<Integer> getFeasiblePreferences() {
+		return preferenceList.stream() //
+				.filter(i -> feasibleMatches.contains(i)) //
+				.collect(Collectors.toList());
 	}
 
 	public Person getMatch() {

@@ -1,4 +1,3 @@
-import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,12 +21,34 @@ public class EquitableMatcher {
 		List<List<Person>> manOptimalMatch = GaleShapelyAlgorithm.execute(cloneGroups(groups), "m");
 		List<List<Person>> womanOptimalMatch = GaleShapelyAlgorithm.execute(cloneGroups(groups), "w");
 
+		trimFeasiblePreferences(groups, manOptimalMatch, womanOptimalMatch);
+
+
 		Long equityScore = calculateEquityScore(manOptimalMatch);
 		System.out.println("Man-optimal equity score: " + equityScore);
 		equityScore = calculateEquityScore(womanOptimalMatch);
 		System.out.println("Woman-optimal equity score: " + equityScore);
 	}
 
+
+	private void trimFeasiblePreferences(List<List<Person>> groups, List<List<Person>> manOptimalMatch,
+			List<List<Person>> womanOptimalMatch) {
+		List<Person> men = groups.get(0);
+		List<Person> women = groups.get(0);
+		List<Person> menOptimal = manOptimalMatch.get(0);
+		List<Person> menPessimal = womanOptimalMatch.get(0);
+		List<Person> womenOptimal = womanOptimalMatch.get(1);
+		List<Person> womenPessimal = manOptimalMatch.get(1);
+
+		trimFeasiblePreferences(men, women, menOptimal, menPessimal);
+		trimFeasiblePreferences(women, men, womenOptimal, womenPessimal);
+	}
+
+	private void trimFeasiblePreferences(List<Person> men, List<Person> women, List<Person> menOptimal,
+			List<Person> menPessimal) {
+		// TODO Auto-generated method stub
+		
+	}
 
 	private Long calculateEquityScore(List<List<Person>> manOptimalMatch) {
 		List<Person> men = manOptimalMatch.get(0);
