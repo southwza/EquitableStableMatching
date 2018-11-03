@@ -1,8 +1,6 @@
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.SerializationUtils;
-
 public class EquitableMatcher {
 
 	private Long bestMatchValue = Long.MAX_VALUE;
@@ -34,6 +32,8 @@ public class EquitableMatcher {
 		findMostEquitableMatch(groups);
 
 		equityScore = calculateEquityScore(bestMatch);
+		System.out.println("Optimal matching:");
+		StableMatchingUtils.printOutput(bestMatch, true);
 		System.out.println("Total matchings: " + numberOfMatchings + " Optimal equity score: " + equityScore);
 
 	}
@@ -48,6 +48,9 @@ public class EquitableMatcher {
 	private void findMostEquitableMatch(Integer unmatchedCount, List<List<Person>> input) {
 		// base case: unmatched list is empty:
 		if (unmatchedCount == 0) {
+			 if (!StableMatchingUtils.checkStableMatching(input)) {
+				 return;
+			 }
 			numberOfMatchings++;
 			Long equityScore = calculateEquityScore(input);
 			if (equityScore < bestMatchValue) {
@@ -121,9 +124,9 @@ public class EquitableMatcher {
 		}
 	}
 
-	private Long calculateEquityScore(List<List<Person>> manOptimalMatch) {
-		List<Person> men = manOptimalMatch.get(0);
-		List<Person> women = manOptimalMatch.get(1);
+	private Long calculateEquityScore(List<List<Person>> match) {
+		List<Person> men = match.get(0);
+		List<Person> women = match.get(1);
 		Long equity = 0L;
 		equity = men.stream() //
 				.map(man -> calculatePreferenceScore(man, women)).reduce(0L, (a, b) -> a + b);
@@ -144,7 +147,7 @@ public class EquitableMatcher {
 	private List<List<Person>> cloneGroups(List<List<Person>> groups) {
 		return groups.stream() //
 				.map(personList -> personList.stream() //
-						.map(person -> SerializationUtils.clone(person)) //
+						.map(person -> person.clone(person)) //
 						.collect(Collectors.toList())) //
 				.collect(Collectors.toList());
 	}

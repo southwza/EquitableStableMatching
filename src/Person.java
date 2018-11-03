@@ -1,13 +1,11 @@
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class Person implements Serializable {
+public class Person implements Cloneable {
 
-	private static final long serialVersionUID = 8934557391835532836L;
 	private List<Integer> preferenceList = List.of();
 	private Person match;
 	private Person lastRejected;
@@ -79,5 +77,14 @@ public class Person implements Serializable {
 	@Override
 	public int hashCode() {
 		return Objects.hash(position);
+	}
+
+	public Person clone(Person person) {
+		Person clone = new Person(this.position);
+		clone.feasibleMatches = new HashSet<Integer>(this.feasibleMatches);
+		clone.lastRejected = this.lastRejected;
+		clone.match = this.match;
+		clone.preferenceList = this.preferenceList;
+		return clone;
 	}
 }

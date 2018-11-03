@@ -6,28 +6,12 @@ public class GaleShapelyAlgorithm {
 	public static List<List<Person>> execute(List<List<Person>> groups, String gender) {
 		if (gender.equalsIgnoreCase("m")) {
 			executeGSAlgorithm(groups, true);
-			printOutput(groups, true);
+//			StableMatchingUtils.printOutput(groups, true);
 		} else {
 			executeGSAlgorithm(groups, false);
-			printOutput(groups, false);
+//			StableMatchingUtils.printOutput(groups, false);
 		}
 		return groups;
-	}
-
-	private static void printOutput(List<List<Person>> matchedPeople, boolean menFirst) {
-		List<Person> men = matchedPeople.get(0);
-		List<Person> women = matchedPeople.get(1);
-		for (int i = 0; i < men.size(); i++) {
-			int matchIndex;
-			if (menFirst) {
-				Person match = men.get(i).getMatch();
-				matchIndex = women.indexOf(match);
-			} else {
-				Person match = women.get(i).getMatch();
-				matchIndex = men.indexOf(match);
-			}
-			System.out.println("(" + (i + 1) + ", " + (matchIndex + 1) + ")");
-		}
 	}
 
 	private static void executeGSAlgorithm(List<List<Person>> groups, boolean manOptimal) {
