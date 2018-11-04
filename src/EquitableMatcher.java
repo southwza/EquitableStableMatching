@@ -48,11 +48,13 @@ public class EquitableMatcher {
 	private void findMostEquitableMatch(Integer unmatchedCount, List<List<Person>> input) {
 		// base case: unmatched list is empty:
 		if (unmatchedCount == 0) {
-			 if (!StableMatchingUtils.checkStableMatching(input)) {
-				 return;
+			if (!StableMatchingUtils.checkStableMatching(input)) {
+//				System.out.println("non stable!");
+				return;
 			 }
 			numberOfMatchings++;
 			Long equityScore = calculateEquityScore(input);
+			System.out.println("equity score: " + equityScore);
 			if (equityScore < bestMatchValue) {
 				bestMatchValue = equityScore;
 				bestMatch = input;
@@ -103,8 +105,8 @@ public class EquitableMatcher {
 			Integer optimalMatchIndex = groupB.indexOf(optimalMatch);
 			Integer pessimalMatchIndex = groupB.indexOf(pessimalMatch);
 			trimFeasiblePreferencesForIndividual(person, optimalMatchIndex, pessimalMatchIndex);
-			// System.out.println("person: " + personIndex + " pref: " +
-			// person.getPreferenceList() + " feas: " + person.getFeasiblePreferences());
+			 System.out.println("person: " + personIndex + " pref: " +
+			 person.getPreferenceList() + " feas: " + person.getFeasiblePreferences());
 		}
 	}
 
